@@ -6,21 +6,36 @@ async function async1 () {
 
 async function async2 () {
   console.log('async2')
+  setTimeout(function () {
+    console.log('async2 setTimeout')
+  }, 0)
+}
+
+async function async3 () {
+  console.log('async3')
 }
 
 console.log('script start')
 
-setTimeout(function () {
-  console.log('setTimeout')
+setTimeout(async function () {
+  console.log('setTimeout1 start')
+  await async3()
+  console.log('setTimeout1 end')
 }, 0)
 
-async1()
+async1().then(function () {
+  console.log('async1 after')
+}).then(function () {
+  console.log('async1 after2')
+})
 
 new Promise(function (resolve) {
   console.log('promise1')
   resolve()
 }).then(function () {
   console.log('promise2')
+}).then(function () {
+  console.log('promise3')
 })
 
 console.log('script end')
@@ -35,5 +50,11 @@ console.log('script end')
  * script end
  * async1 end
  * promise2
- * setTimeout
+ * async1 after
+ * promise3
+ * async1 after2
+ * setTimeout1 start
+ * async3
+ * setTimeout1 end
+ * async2 setTimeout
  */
